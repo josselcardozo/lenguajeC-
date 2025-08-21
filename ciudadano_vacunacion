@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CampaniaVacunacion
+{
+    class Ciudadano
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+
+        public Ciudadano(int id, string nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Ciudadano c && Id == c.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"{Nombre} (ID: {Id})";
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 1. Crear 500 ciudadanos
+            List<Ciudadano> todos = new List<Ciudadano>();
+            for (int i = 1; i <= 500; i++)
+                todos.Add(new Ciudadano(i, $"Ciudadano {i}"));
+
+            // 2. Seleccionar 75 ciudadanos aleatorios para Pfizer y 75 para AstraZeneca
+            Random rnd = new Random();
+            HashSet<Ciudadano> pfizer = new HashSet<Ciudadano>(
+                todos.OrderBy(x => rnd.Next()).Take(75)
+            );
+            HashSet<Ciudadano> astraZeneca = new HashSet<Ciudadano>(
+                todos.OrderBy(x => rnd.Next()).Take(75)
+            );
+
+            // 3. Operaciones de teoría de conjuntos
+            // Ambas dosis (intersección)
+            HashSet<Ciudadano> ambasDosis = new HashSet<Ciudadano>(pfizer);
+            ambasDosis.IntersectWith(astraZeneca);
+
+            // Solo Pfizer (Pfizer - AstraZeneca)
+            HashSet<Ciudadano> soloPfizer = new HashSet<Ciudadano>(pfizer);
+            soloPfizer.ExceptWith(astraZeneca);
+
+            // Solo AstraZeneca (AstraZeneca - Pfizer)
+            HashSet<Ciudadano> soloAstra = new HashSet<Ciudadano>(astraZeneca);
+            soloAstra.ExceptWith(pfizer);
+
+            // No vacunados (Todos - (Pfizer ∪ AstraZeneca))
+            HashSet<Ciudadano> vacunados = new HashSet<Ciudadano>(pfizer);
+            vacunados.UnionWith(astraZeneca);
+            HashSet<Ciudadano> noVacunados = new HashSet<Ciudadano>(todos);
+            noVacunados.ExceptWith(vacunados);
+
+            // 4. Mostrar resultados
+            Console.WriteLine("=== Ciudadanos NO vacunados ===");
+            foreach (var c in noVacunados) Console.WriteLine(c);
+
+            Console.WriteLine("\n=== Ciudadanos con ambas dosis ===");
+            foreach (var c in ambasDosis) Console.WriteLine(c);
+
+            Console.WriteLine("\n=== Ciudadanos SOLO Pfizer ===");
+            foreach (var c in soloPfizer) Console.WriteLine(c);
+
+            Console.WriteLine("\n=== Ciudadanos SOLO AstraZeneca ===");
+            foreach (var c in soloAstra) Console.WriteLine(c);
+        }
+    }
+}

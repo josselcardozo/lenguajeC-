@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+
+namespace CatalogoRevistas
+{
+    class Program
+    {
+        // Catálogo de revistas
+        static List<string> catalogo = new List<string>
+        {
+            "National Geographic",
+            "Time",
+            "Forbes",
+            "Scientific American",
+            "Nature",
+            "People",
+            "The Economist",
+            "Sports Illustrated",
+            "PC Magazine",
+            "Reader's Digest"
+        };
+
+        static void Main(string[] args)
+        {
+            int opcion;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("=== CATÁLOGO DE REVISTAS ===");
+                Console.WriteLine("1. Buscar revista (iterativa)");
+                Console.WriteLine("2. Buscar revista (recursiva)");
+                Console.WriteLine("3. Mostrar catálogo");
+                Console.WriteLine("0. Salir");
+                Console.Write("Seleccione una opción: ");
+                
+                if (!int.TryParse(Console.ReadLine(), out opcion))
+                {
+                    opcion = -1; // Opción inválida
+                }
+
+                switch (opcion)
+                {
+                    case 1:
+                        BuscarIterativa();
+                        break;
+                    case 2:
+                        BuscarRecursiva();
+                        break;
+                    case 3:
+                        MostrarCatalogo();
+                        break;
+                    case 0:
+                        Console.WriteLine("Saliendo...");
+                        break;
+                    default:
+                        Console.WriteLine("Opción inválida. Intente nuevamente.");
+                        break;
+                }
+
+                if (opcion != 0)
+                {
+                    Console.WriteLine("\nPresione una tecla para continuar...");
+                    Console.ReadKey();
+                }
+
+            } while (opcion != 0);
+        }
+
+        // Método para mostrar el catálogo
+        static void MostrarCatalogo()
+        {
+            Console.WriteLine("\n--- Catálogo de Revistas ---");
+            foreach (var revista in catalogo)
+            {
+                Console.WriteLine("- " + revista);
+            }
+        }
+
+        // Búsqueda iterativa
+        static void BuscarIterativa()
+        {
+            Console.Write("\nIngrese el título a buscar: ");
+            string titulo = Console.ReadLine();
+
+            bool encontrado = false;
+
+            foreach (var revista in catalogo)
+            {
+                if (revista.Equals(titulo, StringComparison.OrdinalIgnoreCase))
+                {
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado)
+                Console.WriteLine("Resultado: Encontrado");
+            else
+                Console.WriteLine("Resultado: No encontrado");
+        }
+
+        // Búsqueda recursiva
+        static void BuscarRecursiva()
+        {
+            Console.Write("\nIngrese el título a buscar: ");
+            string titulo = Console.ReadLine();
+
+            bool resultado = BuscarRecursivo(titulo, 0);
+
+            if (resultado)
+                Console.WriteLine("Resultado: Encontrado");
+            else
+                Console.WriteLine("Resultado: No encontrado");
+        }
+
+        // Función recursiva auxiliar
+        static bool BuscarRecursivo(string titulo, int indice)
+        {
+            // Caso base: si llegamos al final de la lista
+            if (indice >= catalogo.Count)
+                return false;
+
+            // Comparamos el título actual
+            if (catalogo[indice].Equals(titulo, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            // Paso recursivo: buscar en el siguiente índice
+            return BuscarRecursivo(titulo, indice + 1);
+        }
+    }
+}

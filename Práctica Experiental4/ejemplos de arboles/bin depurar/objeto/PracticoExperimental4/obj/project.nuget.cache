@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "LMLJJwCjprE=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\crismen\\OneDrive\\Documentos\\GitHub\\ESTRUCTURA-DE-DATOS_GITHUB\\PracticoExperimental4\\PracticoExperimental4.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\crismen\\.nuget\\packages\\microsoft.win32.systemevents\\8.0.0\\microsoft.win32.systemevents.8.0.0.nupkg.sha512",
+    "C:\\Users\\crismen\\.nuget\\packages\\system.drawing.common\\8.0.0\\system.drawing.common.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
